@@ -12,6 +12,8 @@ boxes = cross(rows, cols)
 row_units = [cross(r, cols) for r in rows]
 column_units = [cross(rows, c) for c in cols]
 square_units = [cross(rs, cs) for rs in ('ABC','DEF','GHI') for cs in ('123','456','789')]
+
+# adds diagonal box mappings for solving diagonal sudokus
 diagonal_down_units = [[rows[i]+cols[i] for i in range(len(rows))]]
 diagonal_up_units = [[rows[i]+cols_reverse[i] for i in range(len(rows))]]
 unitlist = row_units + column_units + square_units + diagonal_down_units + diagonal_up_units
