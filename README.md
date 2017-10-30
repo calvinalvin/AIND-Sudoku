@@ -7,7 +7,7 @@ A: We first run a check against all boxes with 2 potential. We know that anythin
 
 # Question 2 (Diagonal Sudoku)
 Q: How do we use constraint propagation to solve the diagonal sudoku problem?  
-A: *Student should provide answer here*
+A: The diagonal sudoku problem was solved by adding helper variables that included diagonal mappings for each box. These are then included in the unit and peer mappings.
 
 ### Install
 
