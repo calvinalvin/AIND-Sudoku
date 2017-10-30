@@ -62,9 +62,10 @@ def naked_twins(values):
         twin_val = set(values[first])
         print("going to do replacements for twins " + first + " " + second + " which contains " + values[first])
         print("units for that box are:")
-        print(units[first])
+        all_peers = set(peers[first]) & set(peers[second])
+        print(all_peers)
 
-        for peer in set(peers[first]) & set(peers[second]):
+        for peer in all_peers:
             if (peer != first and peer != second and len(values[peer]) > 1):
                 for rm_val in values[first]:
                     values = assign_value(values, peer, values[peer].replace(rm_val,''))
