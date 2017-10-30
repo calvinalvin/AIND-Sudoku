@@ -3,7 +3,7 @@
 
 # Question 1 (Naked Twins)
 Q: How do we use constraint propagation to solve the naked twins problem?  
-A: We first run a check against all boxes with 2 potential. We know that anything with 2 potential answers is a possible twin. We will store this in a list called `potentials`. We then need to screen this list further by checking against the peers of the potential twins. Once we have the actual naked twins, we loop through all the box peers of the twins and remove the twin values from all peers.
+A: We first run a check against all boxes with 2 potential. We know that anything with 2 potential answers is a possible twin. We will store this in a list called `potentials`. We then need to screen this list further by checking against the peers of the potential twins. Once we have the actual naked twins, we loop through all the box peers of the twins and remove the twin values from all peers. We then use `naked_twins` inside the `reduce_puzzle` fn to help reduce the possibilities.
 
 # Question 2 (Diagonal Sudoku)
 Q: How do we use constraint propagation to solve the diagonal sudoku problem?  
