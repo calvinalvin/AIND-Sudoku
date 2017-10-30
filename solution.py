@@ -1,3 +1,7 @@
+import logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger("default")
+
 rows = 'ABCDEFGHI'
 cols = '123456789'
 cols_reverse = cols[::-1]
@@ -43,14 +47,13 @@ def naked_twins(values):
     Returns:
         the values dictionary with the naked twins eliminated from peers.
     """
-    print("---- naked twins called ------")
+    logger.debug("---- naked twins called ------")
     display(values)
-    print("::::::::::::::::::::::::::::::::::::::::::")
+    logger.debug("::::::::::::::::::::::::::::::::::::::::::")
 
     # Find all instances of naked twins
     potentials = [box for box in values.keys() if len(values[box]) == 2]
     naked_twins = set()
-
     for box in potentials:
         peer_match = []
         for peer in peers[box]:
@@ -65,20 +68,20 @@ def naked_twins(values):
         first = twins[0]
         second = twins[1]
         twin_val = set(values[first])
-        print("going to do replacements for twins " + first + " " + second + " which contains " + values[first])
-        print("units for that box are:")
+        logger.debug("going to do replacements for twins " + first + " " + second + " which contains " + values[first])
+        logger.debug("units for that box are:")
         all_peers = set(peers[first]) & set(peers[second])
-        print(all_peers)
+        logger.debug(all_peers)
 
         for peer in all_peers:
             if (peer != first and peer != second and len(values[peer]) > 1):
                 for rm_val in values[first]:
                     values = assign_value(values, peer, values[peer].replace(rm_val,''))
 
-    print("---- after replacements --------")
+    logger.debug("---- after replacements --------")
     display(values)
 
-    print(":::::::::::::::::::::::::")
+    logger.debug(":::::::::::::::::::::::::")
     return values
 
 def grid_values(grid):
@@ -116,6 +119,11 @@ def display(values):
     return
 
 def eliminate(values):
+    """
+    Go through all the boxes, and whenever there is a box with a value, eliminate this value from the values of all its peers.
+    Input: A sudoku in dictionary form.
+    Output: The resulting sudoku in dictionary form.
+    """
     solved_values = [box for box in values.keys() if len(values[box]) == 1]
     for box in solved_values:
         digit = values[box]
@@ -124,6 +132,11 @@ def eliminate(values):
     return values
 
 def only_choice(values):
+    """
+    Go through all the units, and whenever there is a unit with a value that only fits in one box, assign the value to this box.
+    Input: A sudoku in dictionary form.
+    Output: The resulting sudoku in dictionary form.
+    """
     for unit in unitlist:
         for digit in '123456789':
             dplaces = [box for box in unit if digit in values[box]]
@@ -132,6 +145,13 @@ def only_choice(values):
     return values
 
 def reduce_puzzle(values):
+    """
+    Iterate eliminate() and only_choice(). If at some point, there is a box with no available values, return False.
+    If the sudoku is solved, return the sudoku.
+    If after an iteration of both functions, the sudoku remains the same, return the sudoku.
+    Input: A sudoku in dictionary form.
+    Output: The resulting sudoku in dictionary form.
+    """
     solved_values = [box for box in values.keys() if len(values[box]) == 1]
     stalled = False
     while not stalled:
@@ -146,6 +166,11 @@ def reduce_puzzle(values):
     return values
 
 def search(values):
+    """
+    Uses recursion to use a depth-first search to follow a tree of possibilties beginning with a random box.
+    Input: A sudoku in dictionary form.
+    Output: The resulting sudoku in dictionary form.
+    """
     values = reduce_puzzle(values)
     if values is False:
         return False ## Failed earlier
